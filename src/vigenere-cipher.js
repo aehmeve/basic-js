@@ -20,8 +20,6 @@ const { NotImplementedError } = require('../extensions/index.js');
  * 
  */
 class VigenereCipheringMachine {
-  mode;
-
   constructor (direct) {
     this.mode = direct;
   }
@@ -35,24 +33,24 @@ class VigenereCipheringMachine {
     let indexForKey = 0;
     let str = message.toUpperCase();
     key = key.toUpperCase();
-  
+
     for (let i = 0; i < str.length; i += 1) {
-  
+
       if (str.charCodeAt(i) >= 65 && str.charCodeAt(i) <= 90) { // encrypt character
         let positionsToMove = key.charCodeAt(indexForKey) - 65;
         let encryptedCharacter = String.fromCharCode(str.charCodeAt(i) + positionsToMove);
-  
+
         if (encryptedCharacter.charCodeAt(0) > 90) {
           let positionOverflow = encryptedCharacter.charCodeAt(0) - 91;
-  
+
           encryptedCharacter = String.fromCharCode(65 + positionOverflow);
           encryptedMessage += encryptedCharacter;
         } else {
           encryptedMessage += encryptedCharacter;
         }
-  
+
         indexForKey += 1;
-  
+
         if (indexForKey > key.length - 1) {  // restart indexForKey
           indexForKey = 0;
         }
@@ -77,24 +75,24 @@ class VigenereCipheringMachine {
     let indexForKey = 0;
     let str = encryptedMessage.toUpperCase();
     key = key.toUpperCase();
-  
+
     for (let i = 0; i < str.length; i += 1) {
-  
+
       if (str.charCodeAt(i) >= 65 && str.charCodeAt(i) <= 90) { // decrypt character
         let positionsToMove = key.charCodeAt(indexForKey) - 65;
         let decryptedCharacter = String.fromCharCode(str.charCodeAt(i) - positionsToMove);
-  
+
         if (decryptedCharacter.charCodeAt(0) < 65) {
           let positionOverflow = 64 - decryptedCharacter.charCodeAt(0);
-  
+
           decryptedCharacter = String.fromCharCode(90 - positionOverflow);
           decryptedMessage += decryptedCharacter;
         } else {
           decryptedMessage += decryptedCharacter;
         }
-  
+
         indexForKey += 1;
-  
+
         if (indexForKey > key.length - 1) {  // restart indexForKey
           indexForKey = 0;
         }
